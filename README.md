@@ -5,8 +5,8 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
 
 
 <div align='center'>
-  <img src='assets/darknet19.png' height="200px">
-  <img src='assets/darknet53.png' height="200px">
+  <img src='assets/darknet19.png' height="400px">
+  <img src='assets/darknet53.png' height="400px">
 </div>
 
 
