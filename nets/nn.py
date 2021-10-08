@@ -164,13 +164,13 @@ if __name__ == '__main__':
     darknet53 = DarkNet53(ResidualBlock, num_classes=1000, init_weight=True)
     darknet53_features = darknet53.features
 
-    print('Num. of Params of DarkNet: {}'.format(sum(p.numel() for p in darknet19.parameters() if p.requires_grad)))
+    print('Num. of Params of DarkNet19: {}'.format(sum(p.numel() for p in darknet19.parameters() if p.requires_grad)))
     print('Num. of Params of DarkNet53: {}'.format(sum(p.numel() for p in darknet53.parameters() if p.requires_grad)))
 
     x = torch.randn(1, 3, 256, 256)
 
-    print('Output of DarkNet: {}'.format(darknet19(x).shape))
+    print('Output of DarkNet19: {}'.format(darknet19(x).shape))
     print('Output of DarkNet53: {}'.format(darknet53(x).shape))
 
-    print('Feature Extractor Output of DarkNet: {}'.format(darknet19_features(x).shape))
+    print('Feature Extractor Output of DarkNet19: {}'.format(darknet19_features(x).shape))
     print('Feature Extractor Output of DarkNet53: {}'.format(darknet53_features(x).shape))
