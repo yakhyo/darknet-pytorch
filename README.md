@@ -2,7 +2,7 @@
 
 DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://arxiv.org/pdf/1612.08242.pdf), [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf) respectively.
 
-
+_underconstruction_
 
 <div align='center'>
   <img src='assets/darknet19.png' height="400px">
