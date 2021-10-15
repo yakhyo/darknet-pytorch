@@ -19,7 +19,7 @@ class ResidualBlock(nn.Module):
     def __init__(self, c1):
         super(ResidualBlock, self).__init__()
         c2 = c1 // 2
-        self.layer1 = Conv(c1, c2, p=0)
+        self.layer1 = Conv(c1, c2)
         self.layer2 = Conv(c2, c1, k=3)
 
     def forward(self, x):
