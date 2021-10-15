@@ -9,7 +9,7 @@ class Conv(nn.Module):
         super(Conv, self).__init__()
         self.conv = nn.Conv2d(c1, c2, k, s, auto_pad(k, p), groups=g, bias=False)
         self.bn = nn.BatchNorm2d(c2)
-        self.act = nn.LeakyReLU(0.1, inplace=True) if act else nn.ReLU(inplace=True)
+        self.act = nn.LeakyReLU(0.01) if act else nn.ReLU()
 
     def forward(self, x):
         return self.act(self.bn(self.conv(x)))
