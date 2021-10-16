@@ -149,11 +149,11 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
 
     end = time.time()
 
-    for i, data in enumerate(train_loader):
+    for i, (images, targets) in enumerate(train_loader):
         # measure data loading time
         data_time.update(time.time() - end)
 
-        images, targets = data[0].to(device), data[1].to(device)
+        images, targets = images.to(device), targets.to(device)
 
         # compute output
         output = model(images)
@@ -219,8 +219,8 @@ def validate(val_loader, model, criterion, args):
 
     with torch.no_grad():
         end = time.time()
-        for i, data in enumerate(val_loader):
-            images, targets = data[0].to(device), data[1].to(device)
+        for i, (images, targets) in enumerate(val_loader):
+            images, targets = images.to(device), targets.to(device)
 
             # compute output
             output = model(images)
