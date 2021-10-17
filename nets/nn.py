@@ -19,7 +19,7 @@ class ResidualBlock(nn.Module):
     def __init__(self, c1):
         super(ResidualBlock, self).__init__()
         c2 = c1 // 2
-        self.layer1 = Conv(c1, c2)
+        self.layer1 = Conv(c1, c2, p=0)
         self.layer2 = Conv(c2, c1, k=3)
 
     def forward(self, x):
@@ -100,33 +100,48 @@ class DarkNet53(nn.Module):
         if init_weight:
             self._initialize_weights()
 
-        self.features = nn.Sequential(
-            Conv(3, 32, 3),
-            Conv(32, 64, 3, 2),
+        self.conv1 = Conv(3, 32, 3)
+        self.conv2 = Conv(32, 64, 3, 2)
 
-            *self._make_layer(block, 64, num_blocks=1),
-            Conv(64, 128, 3, 2),
+        self.block1 = self._make_layer(block, in_channels=64, num_blocks=1)
+        self.conv3 = Conv(64, 128, 3, 2)
 
-            *self._make_layer(block, 128, num_blocks=2),
-            Conv(128, 256, 3, 2),
+        self.block2 = self._make_layer(block, in_channels=128, num_blocks=2)
+        self.conv4 = Conv(128, 256, 3, 2)
 
-            *self._make_layer(block, 256, num_blocks=8),
-            Conv(256, 512, 3, 2),
+        self.block3 = self._make_layer(block, in_channels=256, num_blocks=8)
+        self.conv5 = Conv(256, 512, 3, 2)
 
-            *self._make_layer(block, 512, num_blocks=8),
-            Conv(512, 1024, 3, 2),
+        self.block4 = self._make_layer(block, in_channels=512, num_blocks=8)
+        self.conv6 = Conv(512, 1024, 3, 2)
 
-            *self._make_layer(block, 1024, num_blocks=4)
-        )
-        self.classifier = nn.Sequential(
-            *self.features,
-            GlobalAvgPool2d(),
-            nn.Linear(1024, num_classes),
-            nn.Softmax(dim=1)
-        )
+        self.block5 = self._make_layer(block, in_channels=1024, num_blocks=4)
+
+        self.pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc = nn.Linear(1024, self.num_classes)
 
     def forward(self, x):
-        return self.classifier(x)
+        out = self.conv1(x)
+        out = self.conv2(out)
+
+        out = self.block1(out)
+        out = self.conv3(out)
+
+        out = self.conv4(out)
+        out = self.block3(out)
+
+        out = self.conv5(out)
+        out = self.block4(out)
+
+        out = self.conv6(out)
+        out = self.block5(out)
+
+        out = self.pool(out)
+        out = out.view(-1, 1024)
+
+        out = self.fc(out)
+
+        return out
 
     def _initialize_weights(self):
         for m in self.modules():
@@ -162,7 +177,6 @@ if __name__ == '__main__':
     darknet19_features = darknet19.features
 
     darknet53 = DarkNet53(ResidualBlock, num_classes=1000, init_weight=True)
-    darknet53_features = darknet53.features
 
     print('Num. of Params of DarkNet19: {}'.format(sum(p.numel() for p in darknet19.parameters() if p.requires_grad)))
     print('Num. of Params of DarkNet53: {}'.format(sum(p.numel() for p in darknet53.parameters() if p.requires_grad)))
@@ -173,4 +187,3 @@ if __name__ == '__main__':
     print('Output of DarkNet53: {}'.format(darknet53(x).shape))
 
     print('Feature Extractor Output of DarkNet19: {}'.format(darknet19_features(x).shape))
-    print('Feature Extractor Output of DarkNet53: {}'.format(darknet53_features(x).shape))
