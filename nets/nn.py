@@ -71,8 +71,7 @@ class DarkNet19(nn.Module):
         self.classifier = nn.Sequential(
             *self.features,
             Conv(1024, num_classes, 1),
-            GlobalAvgPool2d(),
-            nn.Softmax(dim=1)
+            GlobalAvgPool2d()
         )
 
     def forward(self, x):
