@@ -53,5 +53,5 @@ Dataset structure:
 ```
  git clone https://github.com/yakhyo/DarkNet.git
  cd DarkNet
- python main.py ../IMAGENET --batch-size 512
+ python main.py ../IMAGENET --batch-size 512 --workers 8
 ```
