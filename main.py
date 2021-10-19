@@ -45,7 +45,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def main_worker(args):
-    global best_acc1
+    
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     print('=> Creating Model <=')
