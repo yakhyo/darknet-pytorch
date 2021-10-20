@@ -2,8 +2,8 @@
 
 DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://arxiv.org/pdf/1612.08242.pdf), [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf) respectively.
 <div align='center'>
-  <img src='assets/darknet19.png' height="600px">
-  <img src='assets/darknet53.png' height="600px">
+  <img src='assets/darknet19.png' height="550px">
+  <img src='assets/darknet53.png' height="550px">
 </div>
 
 ##
