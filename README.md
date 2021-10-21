@@ -23,8 +23,8 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
   </tr>
   <tr>
     <td>DarkNet19</td>
-    <td>...</td>
-    <td>...</td>
+    <td><strong>70.5</strong></td>
+    <td><strong>89.7</strong></td>
     <td>74.1</td>
     <td>91.8</td>
   </tr>
@@ -34,6 +34,13 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
     <td><strong>90.8</strong></td>
     <td>77.2</td>
     <td>93.8</td>
+  </tr>
+  <tr>
+    <td>CSP-DarkNet53</td>
+    <td><strong>...</strong></td>
+    <td><strong>...</strong></td>
+    <td>77.2</td>
+    <td>93.6</td>
   </tr>
 </table>
 *Trained on ImageNet (50 epochs)
