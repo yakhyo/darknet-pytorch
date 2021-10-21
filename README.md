@@ -7,6 +7,11 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
 </div>
 
 ##
+
+**Note!**
+
+In `nn.py` file, `DarkNet53` and `DarkNet53_` are the same but different coding style. Weights of `DarkNet53` and `DarkNet19` are available on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
+
 ## Description:
 <table>
   <tr>
