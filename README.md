@@ -1,6 +1,7 @@
 ## Implementation of DarkNet on PyTorch
 
-DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://arxiv.org/pdf/1612.08242.pdf), [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf) respectively.
+DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://arxiv.org/pdf/1612.08242.pdf)
+, [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf) respectively.
 <div align='center'>
   <img src='assets/darknet19.png' height="500px">
   <img src='assets/darknet53.png' height="500px">
@@ -8,11 +9,8 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
 
 ##
 
-**Note!**
-
-In `nn.py` file, `DarkNet53` and `DarkNet53_` are the same but different coding style. Weights of `DarkNet53` and `DarkNet19` are available on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
-
 ## Description:
+
 <table>
   <tr>
     <td></td>
@@ -48,6 +46,10 @@ In `nn.py` file, `DarkNet53` and `DarkNet53_` are the same but different coding 
     <td>93.6</td>
   </tr>
 </table>
+
+Weights of `DarkNet53` and `DarkNet19` are available
+on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
+
 *Trained on ImageNet (50 epochs)
 
 - GPU: Tesla V100
@@ -62,6 +64,7 @@ Dataset structure:
 ```
 
 ## Train:
+
 ```
  git clone https://github.com/yakhyo/DarkNet.git
  cd DarkNet
