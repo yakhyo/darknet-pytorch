@@ -16,9 +16,10 @@ class Conv(nn.Module):
 
 
 class ResidualBlock(nn.Module):
-    def __init__(self, c1):
+    def __init__(self, c1, shortcut=True):
         super(ResidualBlock, self).__init__()
         c2 = c1 // 2
+        self.shortcut = shortcut
         self.layer1 = Conv(c1, c2, p=0)
         self.layer2 = Conv(c2, c1, k=3)
 
@@ -27,7 +28,28 @@ class ResidualBlock(nn.Module):
         out = self.layer1(x)
         out = self.layer2(out)
         out += residual
+        if self.shortcut:
+            out += residual
         return out
+
+
+class CSP(nn.Module):
+    # CSP Bottleneck https://github.com/WongKinYiu/CrossStagePartialNetworks
+    def __init__(self, c1, c2, num_blocks=1, shortcut=True, g=1, e=0.5):  # ch_in, ch_out, number, shortcut, groups, expansion
+        super(CSP, self).__init__()
+        c_ = int(c2 * e)  # hidden channels
+        self.conv1 = Conv(c1, c_, 1, 1)
+        self.conv2 = nn.Conv2d(c1, c_, 1, 1, bias=False)
+        self.conv3 = nn.Conv2d(c_, c_, 1, 1, bias=False)
+        self.conv4 = Conv(2 * c_, c2, 1, 1)
+        self.bn = nn.BatchNorm2d(2 * c_)  # applied to cat(cv2, cv3)
+        self.act = nn.LeakyReLU(0.1, inplace=True)
+        self.m = nn.Sequential(*[ResidualBlock(c_, shortcut=shortcut) for _ in range(num_blocks)])
+
+    def forward(self, x):
+        y1 = self.conv3(self.m(self.conv1(x)))
+        y2 = self.conv2(x)
+        return self.conv4(self.act(self.bn(torch.cat((y1, y2), dim=1))))
 
 
 class DarkNet19(nn.Module):
@@ -101,21 +123,77 @@ class DarkNet53(nn.Module):
 
         self.features = nn.Sequential(
             Conv(3, 32, 3),
+
             Conv(32, 64, 3, 2),
-
             *self._make_layer(block, 64, num_blocks=1),
+
             Conv(64, 128, 3, 2),
-
             *self._make_layer(block, 128, num_blocks=2),
+
             Conv(128, 256, 3, 2),
-
             *self._make_layer(block, 256, num_blocks=8),
+
             Conv(256, 512, 3, 2),
-
             *self._make_layer(block, 512, num_blocks=8),
-            Conv(512, 1024, 3, 2),
 
+            Conv(512, 1024, 3, 2),
             *self._make_layer(block, 1024, num_blocks=4)
+        )
+        self.classifier = nn.Sequential(
+            *self.features,
+            GlobalAvgPool2d(),
+            nn.Linear(1024, num_classes)
+        )
+
+    def forward(self, x):
+        return self.classifier(x)
+
+    def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='leaky_relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
+
+    @staticmethod
+    def _make_layer(block, in_channels, num_blocks):
+        layers = []
+        for i in range(0, num_blocks):
+            layers.append(block(in_channels))
+        return nn.Sequential(*layers)
+
+
+class CSPDarkNet53(nn.Module):
+    def __init__(self, CSP, num_classes=1000, init_weight=True):
+        super(CSPDarkNet53, self).__init__()
+        self.num_classes = num_classes
+
+        if init_weight:
+            self._initialize_weights()
+
+        self.features = nn.Sequential(
+            Conv(3, 32, 3),
+
+            Conv(32, 64, 3, 2),
+            CSP(64, 64, num_blocks=1),
+
+            Conv(64, 128, 3, 2),
+            CSP(128, 128, num_blocks=2),
+
+            Conv(128, 256, 3, 2),
+            CSP(256, 256, num_blocks=8),
+
+            Conv(256, 512, 3, 2),
+            CSP(512, 512, num_blocks=8),
+
+            Conv(512, 1024, 3, 2),
+            CSP(1024, 1024, num_blocks=4)
         )
         self.classifier = nn.Sequential(
             *self.features,
@@ -155,6 +233,10 @@ def darknet53(num_classes=1000, init_weight=True):
     return DarkNet53(ResidualBlock, num_classes=num_classes, init_weight=init_weight)
 
 
+def cspdarknet53(num_classes=1000, init_weight=True):
+    return CSPDarkNet53(CSP, num_classes=num_classes, init_weight=init_weight)
+
+
 if __name__ == '__main__':
     darknet19 = DarkNet19(num_classes=1000, init_weight=True)
     darknet19_features = darknet19.features
@@ -162,13 +244,19 @@ if __name__ == '__main__':
     darknet53 = DarkNet53(ResidualBlock, num_classes=1000, init_weight=True)
     darknet53_features = darknet53.features
 
+    cspdarknet53 = CSPDarkNet53(CSP, num_classes=1000, init_weight=True)
+    cspdarknet53_features = cspdarknet53.features
+
     print('Num. of Params of DarkNet19: {}'.format(sum(p.numel() for p in darknet19.parameters() if p.requires_grad)))
     print('Num. of Params of DarkNet53: {}'.format(sum(p.numel() for p in darknet53.parameters() if p.requires_grad)))
+    print('Num. of Params of CSPDarkNet53: {}'.format(sum(p.numel() for p in cspdarknet53.parameters() if p.requires_grad)))
 
     x = torch.randn(1, 3, 224, 224)
 
     print('Output of DarkNet19: {}'.format(darknet19(x).shape))
     print('Output of DarkNet53: {}'.format(darknet53(x).shape))
+    print('Output of CSPDarkNet53: {}'.format(cspdarknet53(x).shape))
 
     print('Feature Extractor Output of DarkNet19: {}'.format(darknet19_features(x).shape))
     print('Feature Extractor Output of DarkNet53: {}'.format(darknet53_features(x).shape))
+    print('Feature Extractor Output of CSPDarkNet53: {}'.format(cspdarknet53_features(x).shape))
