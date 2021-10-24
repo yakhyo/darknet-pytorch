@@ -76,11 +76,14 @@ Dataset structure:
 Modify [this line](https://github.com/yakhyo/DarkNet/blob/bf1d0c50935d71fa3918fa65060f73c047733acf/main.py#L52) to choose the network to start the training:
 
 ```python
+# darknet19
+model = darknet19(num_classes=1000, init_weight=True)
+
 # darknet53
 model = darknet53(num_classes=1000, init_weight=True)
 
-# darknet19
-model = darknet19(num_classes=1000, init_weight=True)
+# cspdarknet53
+model = cspdarknet53(num_classes=1000, init_weight=True)
 ```
 
 ## FT:
