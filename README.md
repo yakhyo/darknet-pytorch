@@ -67,6 +67,23 @@ Dataset structure:
 
 ```
  git clone https://github.com/yakhyo/DarkNet.git
- cd DarkNet
+ cd DarkNet2
  python main.py ../IMAGENET --batch-size 512 --workers 8
+```
+
+**Note**
+
+Modify [this line](https://github.com/yakhyo/DarkNet/blob/bf1d0c50935d71fa3918fa65060f73c047733acf/main.py#L52) to choose the network to start the training:
+
+```python
+# darknet53
+model = darknet53(num_classes=1000, init_weight=True)
+
+# darknet19
+model = darknet19(num_classes=1000, init_weight=True)
+```
+
+## FT:
+```cmd
+python main.py ../../Dataset/IMAGENET --batch-size 512 --workers 8 --resume darknet53.pth.tar
 ```
