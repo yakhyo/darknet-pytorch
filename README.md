@@ -1,4 +1,4 @@
-## Implementation of DarkNet on PyTorch
+## Implementation of DarkNet19, DarkNet53, CSPDarkNet53 on PyTorch
 
 DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://arxiv.org/pdf/1612.08242.pdf)
 , [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf) respectively.
@@ -86,7 +86,7 @@ model = darknet53(num_classes=1000, init_weight=True)
 model = cspdarknet53(num_classes=1000, init_weight=True)
 ```
 
-## FT:
+## Continue the training:
 ```cmd
 python main.py ../../Dataset/IMAGENET --batch-size 512 --workers 8 --resume darknet53.pth.tar
 ```
