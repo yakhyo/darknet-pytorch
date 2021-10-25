@@ -217,13 +217,6 @@ class CSPDarkNet53(nn.Module):
                 nn.init.normal_(m.weight, 0, 0.01)
                 nn.init.constant_(m.bias, 0)
 
-    @staticmethod
-    def _make_layer(block, in_channels, num_blocks):
-        layers = []
-        for i in range(0, num_blocks):
-            layers.append(block(in_channels))
-        return nn.Sequential(*layers)
-
 
 def darknet19(num_classes=1000, init_weight=True):
     return DarkNet19(num_classes=num_classes, init_weight=init_weight)
