@@ -24,7 +24,7 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
 <table>
   <tr>
     <td></td>
-    <td colspan="2" align="center">This Repo*</td>
+    <td colspan="2" align="center">This Repo.</td>
     <td colspan="2" align="center">Official</td>
   </tr>
   <tr>
@@ -75,7 +75,7 @@ Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (
 on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
 Now I am training the DarkNet53 with **ELASTIC** block.
 
-*Trained on ImageNet
+Trained on ImageNet
 
 - GPU: Tesla V100
 - Input size: 3x224x224
@@ -101,6 +101,8 @@ Dataset structure:
 Modify [this line](https://github.com/yakhyo/DarkNet/blob/bf1d0c50935d71fa3918fa65060f73c047733acf/main.py#L52) to choose the network to start the training:
 
 ```python
+from nets.nn import darknet19, darknet53, cspdarknet53
+
 # darknet19
 model = darknet19(num_classes=1000, init_weight=True)
 
