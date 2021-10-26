@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from torch.nn import MaxPool2d
+from torch.nn import MaxPool2d, functional as F
 from utils import GlobalAvgPool2d, auto_pad
 
 
@@ -34,8 +34,8 @@ class ResidualBlock(nn.Module):
 
 
 class CSP(nn.Module):
-    # CSP Bottleneck https://github.com/WongKinYiu/CrossStagePartialNetworks
-    def __init__(self, c1, c2, num_blocks=1, shortcut=True, g=1, e=0.5):  # ch_in, ch_out, number, shortcut, groups, expansion
+    """ [https://arxiv.org/pdf/1911.11929.pdf] """
+    def __init__(self, c1, c2, num_blocks=1, shortcut=True, g=1, e=0.5):
         super(CSP, self).__init__()
         c_ = int(c2 * e)  # hidden channels
         self.conv1 = Conv(c1, c_, 1, 1)
@@ -52,7 +52,45 @@ class CSP(nn.Module):
         return self.conv4(self.act(self.bn(torch.cat((y1, y2), dim=1))))
 
 
+class Elastic(nn.Module):
+    """ [https://arxiv.org/abs/1812.05262] """
+    def __init__(self, c1):
+        super(Elastic, self).__init__()
+        c2 = c1 // 2
+
+        self.down = nn.AvgPool2d(2, 2)
+        self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=False)
+
+        self.layer1 = Conv(c1, c2 // 2, p=0)
+        self.layer2 = Conv(c2 // 2, c1, k=3)
+
+    def forward(self, x):
+        residual = x
+        elastic = x
+
+        # check the input size before downsample
+        if x.size(2) % 2 > 0 or x.size(3) % 2 > 0:
+            elastic = F.pad(elastic, (0, x.size(3) % 2, 0, x.size(2) % 2), mode='replicate')
+
+        down = self.down(elastic)
+        elastic = self.layer1(down)
+        elastic = self.layer2(elastic)
+        up = self.up(elastic)
+        # check the output size after upsample
+        if up.size(2) > x.size(2) or up.size(3) > x.size(3):
+            up = up[:, :, :x.size(2), :x.size(3)]
+
+        half = self.layer1(x)
+        half = self.layer2(half)
+
+        out = up + half  # elastic add
+        out += residual  # residual add
+
+        return out
+
+
 class DarkNet19(nn.Module):
+    """ [https://arxiv.org/pdf/1612.08242.pdf] """
     def __init__(self, num_classes=1000, init_weight=True):
         super(DarkNet19, self).__init__()
 
@@ -114,6 +152,7 @@ class DarkNet19(nn.Module):
 
 
 class DarkNet53(nn.Module):
+    """ [https://pjreddie.com/media/files/papers/YOLOv3.pdf] """
     def __init__(self, block, num_classes=1000, init_weight=True):
         super(DarkNet53, self).__init__()
         self.num_classes = num_classes
@@ -170,7 +209,8 @@ class DarkNet53(nn.Module):
 
 
 class CSPDarkNet53(nn.Module):
-    def __init__(self, CSP, num_classes=1000, init_weight=True):
+    """ [https://pjreddie.com/media/files/papers/YOLOv3.pdf] """
+    def __init__(self, block, num_classes=1000, init_weight=True):
         super(CSPDarkNet53, self).__init__()
         self.num_classes = num_classes
 
@@ -181,19 +221,19 @@ class CSPDarkNet53(nn.Module):
             Conv(3, 32, 3),
 
             Conv(32, 64, 3, 2),
-            CSP(64, 64, num_blocks=1),
+            block(64, 64, num_blocks=1),
 
             Conv(64, 128, 3, 2),
-            CSP(128, 128, num_blocks=2),
+            block(128, 128, num_blocks=2),
 
             Conv(128, 256, 3, 2),
-            CSP(256, 256, num_blocks=8),
+            block(256, 256, num_blocks=8),
 
             Conv(256, 512, 3, 2),
-            CSP(512, 512, num_blocks=8),
+            block(512, 512, num_blocks=8),
 
             Conv(512, 1024, 3, 2),
-            CSP(1024, 1024, num_blocks=4)
+            block(1024, 1024, num_blocks=4)
         )
         self.classifier = nn.Sequential(
             *self.features,
@@ -226,30 +266,42 @@ def darknet53(num_classes=1000, init_weight=True):
     return DarkNet53(ResidualBlock, num_classes=num_classes, init_weight=init_weight)
 
 
+def darknet53e(num_classes=1000, init_weight=True):
+    """ DarkNet53 with ELASTIC block """
+    return DarkNet53(Elastic, num_classes=num_classes, init_weight=init_weight)
+
+
 def cspdarknet53(num_classes=1000, init_weight=True):
+    """ DarkNet53 with CSP block """
     return CSPDarkNet53(CSP, num_classes=num_classes, init_weight=init_weight)
 
 
 if __name__ == '__main__':
-    darknet19 = DarkNet19(num_classes=1000, init_weight=True)
+    x = torch.randn(1, 3, 224, 224)
+
+    darknet19 = darknet19()
     darknet19_features = darknet19.features
 
-    darknet53 = DarkNet53(ResidualBlock, num_classes=1000, init_weight=True)
+    darknet53 = darknet53()
     darknet53_features = darknet53.features
 
-    cspdarknet53 = CSPDarkNet53(CSP, num_classes=1000, init_weight=True)
+    darknet53e = darknet53e()
+    darknet53e_features = darknet53e.features
+
+    cspdarknet53 = cspdarknet53()
     cspdarknet53_features = cspdarknet53.features
 
     print('Num. of Params of DarkNet19: {}'.format(sum(p.numel() for p in darknet19.parameters() if p.requires_grad)))
     print('Num. of Params of DarkNet53: {}'.format(sum(p.numel() for p in darknet53.parameters() if p.requires_grad)))
-    print('Num. of Params of CSPDarkNet53: {}'.format(sum(p.numel() for p in cspdarknet53.parameters() if p.requires_grad)))
-
-    x = torch.randn(1, 3, 224, 224)
+    print('Num. of Params of DarkNet53-ELASTIC: {}'.format(sum(p.numel() for p in darknet53e.parameters() if p.requires_grad)))
+    print('Num. of Params of CSP-DarkNet53: {}'.format(sum(p.numel() for p in cspdarknet53.parameters() if p.requires_grad)))
 
     print('Output of DarkNet19: {}'.format(darknet19(x).shape))
     print('Output of DarkNet53: {}'.format(darknet53(x).shape))
-    print('Output of CSPDarkNet53: {}'.format(cspdarknet53(x).shape))
+    print('Output of Elastic DarkNet53-ELASTIC: {}'.format(darknet53e(x).shape))
+    print('Output of CSP-DarkNet53: {}'.format(cspdarknet53(x).shape))
 
     print('Feature Extractor Output of DarkNet19: {}'.format(darknet19_features(x).shape))
     print('Feature Extractor Output of DarkNet53: {}'.format(darknet53_features(x).shape))
-    print('Feature Extractor Output of CSPDarkNet53: {}'.format(cspdarknet53_features(x).shape))
+    print('Feature Extractor Output of DarkNet53-ELASTIC: {}'.format(darknet53e_features(x).shape))
+    print('Feature Extractor Output of CSP-DarkNet53: {}'.format(cspdarknet53_features(x).shape))
