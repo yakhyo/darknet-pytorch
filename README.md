@@ -1,7 +1,15 @@
 ## Implementation of DarkNet19, DarkNet53, CSPDarkNet53 on PyTorch
 
-DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://arxiv.org/pdf/1612.08242.pdf)
-, [YOLOv3](https://pjreddie.com/media/files/papers/YOLOv3.pdf) respectively.
+## Contents:
+ 
+1. [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) - used as a feature extractor in **YOLO900**.
+2. [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf) - used as a feature extractor in **YOLOv3**.
+3. **CSPDarkNet53** - Implementation of [**Cross Stage Partial Networks**](https://openaccess.thecvf.com/content_CVPRW_2020/papers/w28/Wang_CSPNet_A_New_Backbone_That_Can_Enhance_Learning_Capability_of_CVPRW_2020_paper.pdf) in **DarkNet53**.
+4. **DarkNet53-Elastic** - Implementation of [**ELASTIC**](https://openaccess.thecvf.com/content_CVPR_2019/papers/Wang_ELASTIC_Improving_CNNs_With_Dynamic_Scaling_Policies_CVPR_2019_paper.pdf) with **DarkNet53**. _??_
+5. **CSPDarkNet53-Elastic** - Implementation of **CSP** and **ELASTIC** in **DarkNet53**. _??_
+
+Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf):
+
 <div align='center'>
   <img src='assets/darknet19.png' height="500px">
   <img src='assets/darknet53.png' height="500px">
@@ -10,6 +18,8 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
 ##
 
 ## Description:
+
+### Results:
 
 <table>
   <tr>
@@ -44,6 +54,20 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
     <td><strong>92.2</strong></td>
     <td>77.2</td>
     <td>93.6</td>
+  </tr>
+<tr>
+    <td>DarkNet53-Elastic</td>
+    <td><strong>...</strong></td>
+    <td><strong>...</strong></td>
+    <td>77.2</td>
+    <td>93.6</td>
+  </tr>
+<tr>
+    <td>CSPDarkNet53-Elastic</td>
+    <td><strong>...</strong></td>
+    <td><strong>...</strong></td>
+    <td>76.1</td>
+    <td>93.3</td>
   </tr>
 </table>
 
