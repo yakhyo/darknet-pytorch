@@ -40,8 +40,8 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
   </tr>
   <tr>
     <td>CSP-DarkNet53</td>
-    <td><strong>...</strong></td>
-    <td><strong>...</strong></td>
+    <td><strong>74.1</strong></td>
+    <td><strong>92.1</strong></td>
     <td>77.2</td>
     <td>93.6</td>
   </tr>
@@ -49,6 +49,7 @@ DarkNet19 and DarkNet53 are used as a feature extractor in [YOLO9000](https://ar
 
 Weights of `DarkNet53` (105th epoch) and `DarkNet19` (50th epoch) are available
 on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
+I am training the CSPDarkNet53 currently(the results shown above are the 65th epoch).
 
 *Trained on ImageNet
 
