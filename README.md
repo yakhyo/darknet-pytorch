@@ -50,7 +50,7 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
   </tr>
   <tr>
     <td>CSP-DarkNet53</td>
-    <td><strong>74.2</strong></td>
+    <td><strong>74.4</strong></td>
     <td><strong>92.2</strong></td>
     <td>77.2</td>
     <td>93.6</td>
@@ -59,8 +59,8 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
     <td>DarkNet53-Elastic</td>
     <td><strong>...</strong></td>
     <td><strong>...</strong></td>
-    <td>77.2</td>
-    <td>93.6</td>
+    <td>...</td>
+    <td>...</td>
   </tr>
 <tr>
     <td>CSPDarkNet53-Elastic</td>
@@ -73,7 +73,7 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
 
 Weights of `DarkNet53` (105th epoch) and `DarkNet19` (50th epoch) are available
 on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
-I am training the CSPDarkNet53 currently(the results shown above are the 65th epoch).
+Now I am training the CSPDarkNet53 (the accuracy in the table is 76th epoch's result).
 
 *Trained on ImageNet
 
