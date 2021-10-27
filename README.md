@@ -57,8 +57,8 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
   </tr>
 <tr>
     <td>DarkNet53-Elastic</td>
-    <td><strong>...</strong></td>
-    <td><strong>...</strong></td>
+    <td><strong>56.8*</strong></td>
+    <td><strong>81.3*</strong></td>
     <td>...</td>
     <td>...</td>
   </tr>
@@ -70,6 +70,8 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
     <td>93.3</td>
   </tr>
 </table>
+
+*_training hasn't finished yet(20th epoch)._
 
 Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (80th epoch) are available
 on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
@@ -101,13 +103,16 @@ Dataset structure:
 Modify [this line](https://github.com/yakhyo/DarkNet/blob/bf1d0c50935d71fa3918fa65060f73c047733acf/main.py#L52) to choose the network to start the training:
 
 ```python
-from nets.nn import darknet19, darknet53, cspdarknet53
+from nets.nn import darknet19, darknet53, darknet53e, cspdarknet53
 
 # darknet19
 model = darknet19(num_classes=1000, init_weight=True)
 
 # darknet53
 model = darknet53(num_classes=1000, init_weight=True)
+
+# darknet53 elastic
+model = darknet53e(num_classes=1000, init_weight=True)
 
 # cspdarknet53
 model = cspdarknet53(num_classes=1000, init_weight=True)
