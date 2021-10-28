@@ -57,8 +57,8 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
   </tr>
 <tr>
     <td>DarkNet53-Elastic</td>
-    <td><strong>56.8*</strong></td>
-    <td><strong>81.3*</strong></td>
+    <td><strong>70.8*</strong></td>
+    <td><strong>90.2*</strong></td>
     <td>...</td>
     <td>...</td>
   </tr>
@@ -71,7 +71,7 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
   </tr>
 </table>
 
-*_training hasn't finished yet(20th epoch)._
+*_training hasn't finished yet(35th epoch)._
 
 Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (80th epoch) are available
 on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
