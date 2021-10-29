@@ -24,13 +24,14 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
 <table>
   <tr>
     <td></td>
-    <td colspan="2" align="center">This Repo.</td>
+    <td colspan="3" align="center">This Repo.</td>
     <td colspan="2" align="center">Official</td>
   </tr>
   <tr>
     <td>Model</td>
     <td>Acc@1</td>
     <td>Acc@5</td>
+    <td>Params</td>
     <td>Acc@1</td>
     <td>Acc@5</td>
   </tr>
@@ -38,6 +39,7 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
     <td>DarkNet19</td>
     <td><strong>70.5</strong></td>
     <td><strong>89.7</strong></td>
+    <td>21M</td>
     <td>74.1</td>
     <td>91.8</td>
   </tr>
@@ -45,6 +47,7 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
     <td>DarkNet53</td>
     <td><strong>75.6</strong></td>
     <td><strong>92.5</strong></td>
+    <td>41M</td>
     <td>77.2</td>
     <td>93.8</td>
   </tr>
@@ -52,13 +55,15 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
     <td>CSP-DarkNet53</td>
     <td><strong>74.3</strong></td>
     <td><strong>92.2</strong></td>
+    <td>19M</td>
     <td>77.2</td>
     <td>93.6</td>
   </tr>
 <tr>
     <td>DarkNet53-Elastic</td>
-    <td><strong>70.8*</strong></td>
-    <td><strong>90.2*</strong></td>
+    <td><strong>70.8</strong></td>
+    <td><strong>90.2</strong></td>
+    <td>24M</td>
     <td>...</td>
     <td>...</td>
   </tr>
@@ -66,16 +71,15 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
     <td>CSPDarkNet53-Elastic</td>
     <td><strong>...</strong></td>
     <td><strong>...</strong></td>
+    <td><strong>...</strong></td>
     <td>76.1</td>
     <td>93.3</td>
   </tr>
 </table>
 
-*_training hasn't finished yet(35th epoch)._
-
-Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (80th epoch) are available
+Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (80th epoch) and `DarkNet53 ELASTIC` (57th epoch) are available
 on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
-Now I am training the DarkNet53 with **ELASTIC** block.
+
 
 Trained on ImageNet
 
