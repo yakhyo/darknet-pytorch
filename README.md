@@ -5,8 +5,8 @@
 1. [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) - used as a feature extractor in **YOLO900**.
 2. [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf) - used as a feature extractor in **YOLOv3**.
 3. **CSPDarkNet53** - Implementation of [**Cross Stage Partial Networks**](https://openaccess.thecvf.com/content_CVPRW_2020/papers/w28/Wang_CSPNet_A_New_Backbone_That_Can_Enhance_Learning_Capability_of_CVPRW_2020_paper.pdf) in **DarkNet53**.
-4. **DarkNet53-Elastic** - Implementation of [**ELASTIC**](https://openaccess.thecvf.com/content_CVPR_2019/papers/Wang_ELASTIC_Improving_CNNs_With_Dynamic_Scaling_Policies_CVPR_2019_paper.pdf) with **DarkNet53**. _??_
-5. **CSPDarkNet53-Elastic** - Implementation of **CSP** and **ELASTIC** in **DarkNet53**.
+4. **DarkNet53-Elastic** - Implementation of [**ELASTIC**](https://openaccess.thecvf.com/content_CVPR_2019/papers/Wang_ELASTIC_Improving_CNNs_With_Dynamic_Scaling_Policies_CVPR_2019_paper.pdf) with **DarkNet53**. 
+5. **CSPDarkNet53-Elastic** - Implementation of **CSP** and **ELASTIC** in **DarkNet53**._??_
 
 Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf):
 
