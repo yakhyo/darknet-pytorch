@@ -11,8 +11,7 @@
 Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf):
 
 <div align='center'>
-  <img src='assets/darknet19.png' height="500px">
-  <img src='assets/darknet53.png' height="500px">
+  <img src='assets/yolov2-3.png'>
 </div>
 
 ##
