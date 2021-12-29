@@ -1,3 +1,6 @@
+"""
+@author: Yakhyokhuja Valikhujaev <yakhyo9696@gmail.com>
+"""
 import torch
 import torch.nn as nn
 from torch.nn import MaxPool2d, functional as F
