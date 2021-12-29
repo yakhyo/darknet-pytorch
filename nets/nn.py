@@ -3,6 +3,7 @@ import torch.nn as nn
 from torch.nn import MaxPool2d, functional as F
 from utils import GlobalAvgPool2d, auto_pad
 
+__all__ = ['darknet19', 'darknet53', 'darknet53e', 'cspdarknet53']
 
 class Conv(nn.Module):
     def __init__(self, c1, c2, k=1, s=1, p=None, g=1, act=True):
