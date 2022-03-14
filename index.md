@@ -14,7 +14,6 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
   <img src='assets/yolov2-3.png'>
 </div>
 
-##
 
 ## Description:
 
