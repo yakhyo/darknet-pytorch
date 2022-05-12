@@ -1,4 +1,4 @@
-## Implementation of DarkNet19, DarkNet53, CSPDarkNet53 on PyTorch
+## Implementation of DarkNet19, DarkNet53, CSPDarkNet53 in PyTorch
 
 ## Contents:
  
