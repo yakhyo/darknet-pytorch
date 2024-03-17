@@ -1,22 +1,45 @@
-## Implementation of DarkNet19, DarkNet53, CSPDarkNet53 in PyTorch
+## Implementation of DarkNet19, DarkNet53, CSPDarkNet53 with PyTorch
 
-## Contents:
- 
-1. [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) - used as a feature extractor in **YOLO900**.
-2. [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf) - used as a feature extractor in **YOLOv3**.
-3. **CSPDarkNet53** - Implementation of [**Cross Stage Partial Networks**](https://openaccess.thecvf.com/content_CVPRW_2020/papers/w28/Wang_CSPNet_A_New_Backbone_That_Can_Enhance_Learning_Capability_of_CVPRW_2020_paper.pdf) in **DarkNet53**.
-4. **DarkNet53-Elastic** - Implementation of [**ELASTIC**](https://openaccess.thecvf.com/content_CVPR_2019/papers/Wang_ELASTIC_Improving_CNNs_With_Dynamic_Scaling_Policies_CVPR_2019_paper.pdf) with **DarkNet53**. 
-5. **CSPDarkNet53-Elastic** - Implementation of **CSP** and **ELASTIC** in **DarkNet53**._??_
+## Table of Contents
 
-Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**DarkNet53**](https://pjreddie.com/media/files/papers/YOLOv3.pdf):
+* [Project Description](#project-description)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [License](#license)
+
+## Project Description
+
+1. [DarkNet19](https://arxiv.org/pdf/1612.08242.pdf) - used as a feature extractor in **YOLO900**.
+2. [DarkNet53](https://pjreddie.com/media/files/papers/YOLOv3.pdf) - used as a feature extractor in **YOLOv3**.
+3. **CSPDarkNet53** - Implementation
+   of [Cross Stage Partial Networks](https://openaccess.thecvf.com/content_CVPRW_2020/papers/w28/Wang_CSPNet_A_New_Backbone_That_Can_Enhance_Learning_Capability_of_CVPRW_2020_paper.pdf)
+   in **DarkNet53**.
+4. **DarkNet53-Elastic** - Implementation
+   of [ELASTIC](https://openaccess.thecvf.com/content_CVPR_2019/papers/Wang_ELASTIC_Improving_CNNs_With_Dynamic_Scaling_Policies_CVPR_2019_paper.pdf)
+   with **DarkNet53**.
+5. **CSPDarkNet53-Elastic** - Implementation of **CSP** and **ELASTIC** in **DarkNet53**.
+
+Architecture of [DarkNet19](https://arxiv.org/pdf/1612.08242.pdf)
+and [DarkNet53](https://pjreddie.com/media/files/papers/YOLOv3.pdf):
 
 <div align='center'>
   <img src='assets/yolov2-3.png'>
 </div>
 
-##
+## Installation
 
-## Description:
+```
+ git clone https://github.com/yakhyo/darknet-pytorch.git
+ cd darknet-pytorch
+ python main.py path/to/imagenet --batch-size 512 --workers 8
+```
+
+Continue from checkpoint:
+
+```cmd
+python main.py path/to/imagenet --batch-size 512 --workers 8 --resume darknet53.pth.tar
+```
 
 ### Results:
 
@@ -76,9 +99,9 @@ Architecture of [**DarkNet19**](https://arxiv.org/pdf/1612.08242.pdf) and [**Dar
   </tr>
 </table>
 
-Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (80th epoch) and `DarkNet53 ELASTIC` (57th epoch) are available
-on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).
-
+~~Weights of `DarkNet53` (105th epoch), `DarkNet19` (50th epoch), `CSPDarkNet53` (80th epoch) and `DarkNet53 ELASTIC` (
+57th epoch) are available
+on [here](https://www.dropbox.com/sh/90it0q8tsclbpia/AAA0xcObKyndZ-r_Ia9vN1Xra?dl=0).~~
 
 Trained on ImageNet
 
@@ -100,20 +123,10 @@ Dataset structure:
          ├── [class_id3]/xxz3.{jpg,png,jpeg}
 ```
 
-## Train:
-
-```
- git clone https://github.com/yakhyo/DarkNet.git
- cd DarkNet2
- python main.py ../IMAGENET --batch-size 512 --workers 8
-```
-
-**Note**
-
-Modify [this line](https://github.com/yakhyo/DarkNet/blob/bf1d0c50935d71fa3918fa65060f73c047733acf/main.py#L52) to choose the network to start the training:
+## Usage
 
 ```python
-from nets.nn import darknet19, darknet53, darknet53e, cspdarknet53
+from model import darknet19, darknet53, darknet53e, cspdarknet53
 
 # darknet19
 model = darknet19(num_classes=1000, init_weight=True)
@@ -128,7 +141,10 @@ model = darknet53e(num_classes=1000, init_weight=True)
 model = cspdarknet53(num_classes=1000, init_weight=True)
 ```
 
-## Continue the training:
-```cmd
-python main.py ../../Dataset/IMAGENET --batch-size 512 --workers 8 --resume darknet53.pth.tar
-```
+## Contributing
+
+If you find any issues within this code, feel free to create PR or issue.
+
+## License
+
+The project is licensed under the [MIT license](https://opensource.org/license/mit/).
